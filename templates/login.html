@@ -1,0 +1,16 @@
+{% extends "header.html" %}
+{% block page_name %}Login{% endblock %}
+{% block content %}
+    <form method="post">
+        <label>
+            <p>Username</p>
+            <input name="username" placeholder="Username" type="text">
+        </label>
+        <label>
+            <p>Password</p>
+            <input name="password" placeholder="Password" type="password">
+        </label>
+        <br>
+        <input type="submit" name="submit" value="Submit">
+    </form>
+{% endblock %}
