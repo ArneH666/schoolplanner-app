@@ -2,10 +2,11 @@ import flask
 import dotenv
 import os
 import requests
+import pathlib
 
 
 dotenv.load_dotenv()
-app = flask.Flask(__name__, static_url_path="/static")
+app = flask.Flask(__name__, static_url_path="/static", static_folder=pathlib.Path(__file__).parent / "static")
 
 
 API_URL = os.getenv("API_URL")
@@ -27,13 +28,13 @@ def index():
 
 @app.route("/home")
 def home():
-    return flask.render_template("home.html")
+    return flask.render_template("home.html.j2")
 
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if flask.request.method == "GET":
-        return flask.render_template("login.html")
+        return flask.render_template("login.html.j2")
     elif flask.request.method == "POST":
         username = flask.request.form["username"]
         password = flask.request.form["password"]
@@ -42,17 +43,17 @@ def login():
         if resp.status_code == 200:
             return flask.redirect(flask.url_for("home"))
         else:
-            return flask.render_template("login.html", data_incorrect=True)
+            return flask.render_template("login.html.j2", data_incorrect=True)
 
 
 @app.route("/students", methods=["GET", "POST"])
 def students():
     if flask.request.method == "GET":
-        return flask.render_template("students.html")
+        return flask.render_template("students.html.j2")
     elif flask.request.method == "POST":
         if "delete" in flask.request.form:
             # TODO: Delete User Data
-            return flask.render_template("students.html")
+            return flask.render_template("students.html.j2")
         if "change" in flask.request.form:
             return app.redirect(flask.url_for("modify_student", student_id=flask.request.form["id"]))
         if "new" in flask.request.form:
@@ -62,7 +63,7 @@ def students():
 @app.route("/students/modify/<student_id>")
 def modify_student(student_id: str):
     if flask.request.method == "GET":
-        return flask.render_template("modify.html")
+        return flask.render_template("modify.html.j2")
 
 
 @app.route("/students/new", methods=["GET", "POST"])
