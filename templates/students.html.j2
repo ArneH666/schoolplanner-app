@@ -4,25 +4,33 @@
     <table>
         <thead>
             <tr>
-                <th>id</th>
+                <th>Schüler ID</th>
+                <th>Klassen ID</th>
+                <th>Konto ID</th>
                 <th>Vorname</th>
                 <th>Nachname</th>
+                <th>Geburtstag</th>
                 <th>Aktionen</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>Test1</td>
-                <td>Test2</td>
-                <td>Test3</td>
-                <td>
-                    <form method="post">
-                        <input type="hidden" name="id" value="Test1">
-                        <input type="submit" name="change" value="Ändern">
-                        <input type="submit" name="delete" value="Löschen">
-                    </form>
-                </td>
-            </tr>
+            {% for user_data in users %}
+                <tr>
+                    <td>{{ user_data["id"] }}</td>
+                    <td>{{ user_data["school_class_id"] }}</td>
+                    <td>{{ user_data["account"]["id"] }}</td>
+                    <td>{{ user_data["account"]["name"] }}</td>
+                    <td>{{ user_data["account"]["last_name"] }}</td>
+                    <td>{{ user_data["account"]["birthday"] }}</td>
+                    <td>
+                        <form method="post">
+                        <input type="hidden" name="id" value="{{ user_data["id"] }}">
+                            <input type="submit" name="modify" value="Ändern">
+                            <input type="submit" name="delete" value="Löschen">
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
         </tbody>
     </table>
     <form method="post">
