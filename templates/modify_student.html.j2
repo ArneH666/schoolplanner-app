@@ -16,6 +16,6 @@
             <input type="date" name="birthday" value="{{ user_data["account"]["birthday"] }}">
         </label>
         <input type="submit" name="save" value="Speichern">
-        <input type="submit" name="cancel" value="Abbrechen">
+        <a href="{{ url_for('students') }}">Abbrechen</a>
     </form>
 {% endblock %}
