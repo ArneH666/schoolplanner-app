@@ -1,0 +1,21 @@
+{% extends "bases/header.html.j2" %}
+{% block page_name %}Bearbeiten{% endblock %}
+{% block content %}
+    <form method="post">
+        <input type="hidden" name="id" value="{{ user_data["account"]["id"] }}">
+        <label for="name">
+            Vorname:
+            <input type="text" name="name" value="{{ user_data["account"]["name"] }}">
+        </label>
+        <label for="last_name">
+            Nachname:
+            <input type="text" name="last_name" value="{{ user_data["account"]["last_name"] }}">
+        </label>
+        <label for="birthday">
+            Geburtstag:
+            <input type="date" name="birthday" value="{{ user_data["account"]["birthday"] }}">
+        </label>
+        <input type="submit" name="save" value="Speichern">
+        <input type="submit" name="cancel" value="Abbrechen">
+    </form>
+{% endblock %}

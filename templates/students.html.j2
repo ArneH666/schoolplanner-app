@@ -1,6 +1,9 @@
-{% extends "header.html.j2" %}
+{% extends "bases/header.html.j2" %}
 {% block page_name %}Schüler{% endblock %}
 {% block content %}
+    <form method="post">
+        <input type="submit" name="new" value="Neuer Schüler">
+    </form>
     <table>
         <thead>
             <tr>
@@ -14,17 +17,17 @@
             </tr>
         </thead>
         <tbody>
-            {% for user_data in users %}
+            {% for student_data in students %}
                 <tr>
-                    <td>{{ user_data["id"] }}</td>
-                    <td>{{ user_data["school_class_id"] }}</td>
-                    <td>{{ user_data["account"]["id"] }}</td>
-                    <td>{{ user_data["account"]["name"] }}</td>
-                    <td>{{ user_data["account"]["last_name"] }}</td>
-                    <td>{{ user_data["account"]["birthday"] }}</td>
+                    <td>{{ student_data["id"] }}</td>
+                    <td>{{ student_data["school_class_id"] }}</td>
+                    <td>{{ student_data["account"]["id"] }}</td>
+                    <td>{{ student_data["account"]["name"] }}</td>
+                    <td>{{ student_data["account"]["last_name"] }}</td>
+                    <td>{{ student_data["account"]["birthday"] }}</td>
                     <td>
                         <form method="post">
-                        <input type="hidden" name="id" value="{{ user_data["id"] }}">
+                        <input type="hidden" name="id" value="{{ student_data["account"]["id"] }}">
                             <input type="submit" name="modify" value="Ändern">
                             <input type="submit" name="delete" value="Löschen">
                         </form>
@@ -33,7 +36,4 @@
             {% endfor %}
         </tbody>
     </table>
-    <form method="post">
-        <input type="submit" name="new" value="+">
-    </form>
 {% endblock %}

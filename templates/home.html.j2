@@ -1,7 +1,9 @@
-{% extends "header.html.j2" %}
+{% extends "bases/header.html.j2" %}
 {% block page_name %}Home{% endblock %}
 {% block content %}
     <p>Hello, World!</p>
-    <a href="/students">Schüler</a>
-    <a href="/logout">Abmelden</a>
+    <a href="/students">Schüler</a><br>
+    <a href="/teachers">Lehrer</a><br>
+    <a href="/classes">Klassen</a><br>
+    <a href="/logout">Abmelden</a><br>
 {% endblock %}
