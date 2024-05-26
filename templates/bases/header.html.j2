@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block page_name %}{% endblock %} - EduSync</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='EDUSYNC.ico') }}" type="image/ico">
+
 </head>
 <body>
 {% block content %}

@@ -1,3 +1,37 @@
-body {
-    background-color: #000000;
+/* Stil für das Formular */
+form {
+    margin: auto;
+    background-color: #e35b5b;
+    width: fit-content;
+}
+
+/* Stil für die Eingabefelder */
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+/* Stil für den Submit-Button */
+input[type="submit"] {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+/* Hover-Effekt für den Submit-Button */
+input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+/* Optional: Stil für die Beschriftungen */
+p {
+    font-size: 14px;
+    margin-bottom: 5px;
 }
