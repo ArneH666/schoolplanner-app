@@ -8,8 +8,8 @@
         <thead>
             <tr>
                 <th>Schüler ID</th>
-                <th>Klassen ID</th>
-                <th>Konto ID</th>
+                <th>Klassen</th>
+                <th>Benutzername</th>
                 <th>Vorname</th>
                 <th>Nachname</th>
                 <th>Geburtstag</th>
@@ -20,8 +20,8 @@
             {% for student_data in students %}
                 <tr>
                     <td>{{ student_data["id"] }}</td>
-                    <td>{{ student_data["school_class_id"] }}</td>
-                    <td>{{ student_data["account"]["id"] }}</td>
+                    <td>{{ student_data["class_name"] }}</td>
+                    <td>{{ student_data["account"]["username"] }}</td>
                     <td>{{ student_data["account"]["name"] }}</td>
                     <td>{{ student_data["account"]["last_name"] }}</td>
                     <td>{{ student_data["account"]["birthday"] }}</td>
