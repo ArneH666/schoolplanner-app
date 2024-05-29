@@ -21,6 +21,10 @@ def post_request(url_part: str, data: dict) -> requests.Response:
     return requests.post(API_URL + url_part, headers=BEARER_API_TOKEN, json=data)
 
 
+def put_request(url_part: str, data: dict) -> requests.Response:
+    return requests.put(API_URL + url_part, headers=BEARER_API_TOKEN, json=data)
+
+
 def delete_request(url_part: str) -> requests.Response:
     return requests.delete(API_URL + url_part, headers=BEARER_API_TOKEN)
 
@@ -55,6 +59,59 @@ def login() -> str | flask.Response:
 def logout() -> str:
     flask.session.pop("data")
     return flask.render_template("logout/logout.html.j2")
+
+
+@app.route("/users", methods=["GET", "POST"])
+def users() -> str | flask.Response:
+    if "data" not in flask.session:
+        return flask.redirect(flask.url_for("login"), code=401)
+    if flask.request.method == "GET":
+        users_data = get_request("/users")
+        return flask.render_template("users/users.html.j2", users=users_data.json())
+    elif flask.request.method == "POST":
+        if "new" in flask.request.form:
+            return flask.redirect(flask.url_for("user"))
+        if "modify" in flask.request.form:
+            return flask.redirect(flask.url_for("user", user_name=flask.request.form["username"]))
+        if "delete" in flask.request.form:
+            delete_request(f"/users/{flask.request.form['username']}")
+            return flask.render_template("users/users.html.j2", users=get_request("/users").json())
+
+
+@app.route("/users/user/", methods=["GET", "POST"])
+@app.route("/users/user/<user_name>", methods=["GET", "POST"])
+def user(user_name: str | None = None) -> str | flask.Response:
+    if "data" not in flask.session:
+        return flask.redirect(flask.url_for("login"), code=401)
+    if flask.request.method == "GET":
+        if user_name is None:
+            return flask.render_template("users/user/user.html.j2", new=True)
+        user_data = get_request(f"/users/{user_name}")
+        if user_data.status_code != 200:
+            return "There has been an error."
+        return flask.render_template("users/user/user.html.j2", user_data=user_data.json())
+    elif flask.request.method == "POST":
+        if "new" in flask.request.form:
+            data = {
+                "username": flask.request.form["username"],
+                "password": flask.request.form["password"],
+                "email": flask.request.form["email"],
+                "name": flask.request.form["first_name"],
+                "last_name": flask.request.form["last_name"],
+                "birthday": flask.request.form["birthday"]
+            }
+            post_request("/users", data)
+            return flask.redirect(flask.url_for("users"))
+        else:
+            data = {
+                "username": flask.request.form["username"],
+                "email": flask.request.form["email"],
+                "name": flask.request.form["first_name"],
+                "last_name": flask.request.form["last_name"],
+                "birthday": flask.request.form["birthday"]
+            }
+            put_request(f"/users/{user_name}", data)
+            return flask.redirect(flask.url_for("users"))
 
 
 @app.route("/students", methods=["GET", "POST"])
@@ -100,14 +157,15 @@ def student(user_name: str | None = None) -> str | flask.Response:
         for i in range(len(classes_data)):
             classes_data[i]["class_name"] = str(classes_data[i]["grade_id"]) + classes_data[i]["name"]
         if user_name is None:
-            return flask.render_template("students/student/student.html.j2", classesgit =classes_data)
+            return flask.render_template("students/student/student.html.j2", classesgit=classes_data)
         student_data = get_request(f"/users/{user_name}/student")
         if student_data.status_code != 200:
             return "There has been an error."
-        return flask.render_template("students/student/student.html.j2", user_data=student_data.json(), classes=classes_data)
+        return flask.render_template("students/student/student.html.j2", user_data=student_data.json(),
+                                     classes=classes_data)
     elif flask.request.method == "POST":
         if flask.request.form["method"] == "new":
-            pass
+            post_request(f"/users/{user_name}/student")
         elif flask.request.form["method"] == "modify":
             pass
 

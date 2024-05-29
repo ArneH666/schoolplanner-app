@@ -1,0 +1,14 @@
+{% extends "header.html.j2" %}
+{% block page_name %}Benutzer{% endblock %}
+{% block content %}
+    <form method="post">
+        Benutzername: <input type="text" name="username" value="{% if user_data %}{{ user_data.username }}{% endif %}" required><br>
+        {% if new %}Passwort: <input type="password" name="password" required><br>{% endif %}
+        E-Mail: <input type="text" name="email" value="{% if user_data %}{{ user_data.email }}{% endif %}" required><br>
+        Vorname: <input type="text" name="first_name" value="{% if user_data %}{{ user_data.name }}{% endif %}" required><br>
+        Nachname: <input type="text" name="last_name" value="{% if user_data %}{{ user_data.last_name }}{% endif %}" required><br>
+        Geburtsdatum<input type="date" name="birthday" value="{% if user_data %}{{ user_data.birthday }}{% endif %}" required><br>
+        {% if new %}<input type="hidden" name="new" value="true">{% endif %}
+        <input type="submit" value="{% if new %}Erstellen{% else %}Aktualisieren{% endif %}">
+    </form>
+{% endblock %}
