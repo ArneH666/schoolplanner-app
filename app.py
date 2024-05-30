@@ -56,7 +56,9 @@ def login() -> str | flask.Response:
 
 
 @app.route("/logout")
-def logout() -> str:
+def logout() -> str | flask.Response:
+    if "data" not in flask.session:
+        return flask.redirect(flask.url_for("login"), code=401)
     flask.session.pop("data")
     return flask.render_template("logout/logout.html.j2")
 
