@@ -4,16 +4,28 @@
     {% if data_incorrect %}
     	<p style="color: red">Benutzername oder Password ist falsch.</p>
     {% endif %}
-    <form method="post">
-        <label>
-            <p>Benutzername</p>
-            <input name="username" placeholder="Benutzername" type="text" required>
-        </label>
-        <label>
-            <p>Passwort</p>
-            <input name="password" placeholder="Password" type="password" required>
-        </label>
-        <br>
-        <input type="submit" name="submit" value="Submit">
+    <form id="login" method="post">
+        <div class="headingsContainer">
+            <h3>Sign in</h3>
+            <p>Sign in with your username and password</p>
+        </div>
+        <div class="mainContainer">
+            <label>
+                <p>Benutzername</p>
+                <input name="username" placeholder="Benutzername" type="text" required>
+            </label>
+            <label>
+                <p>Passwort</p>
+                <input name="password"placeholder="Password" type="password" required>
+            </label>
+            <div class="subcontainer">
+                <label>
+                  <input type="checkbox" name="remember"> Remember me
+                </label>
+                <p class="forgotpsd"> <a href="#">Forgot Password?</a></p>
+            </div>
+            <br>
+            <button type="submit">Login</button>
+        </div>
     </form>
 {% endblock %}
