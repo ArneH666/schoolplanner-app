@@ -16,12 +16,13 @@
         {% for class in classes %}
             <tr>
                 <td>{{ class["id"] }}</td>
-                <td>{{ class["grade_id"] + class["name"] }}</td>
+                <td>{{ class["class_name"] }}</td>
                 <td>{{ class["head_teacher_id"] }}</td>
                 <td>{{ class["head_teacher_name"] }}</td>
                 <td>{{ class["head_teacher_abbreviation"] }}</td>
                 <td>
                     <form method="post">
+                        <input type="hidden" name="id" value="{{ class["id"] }}">
                         <input type="submit" name="modify" value="Ändern">
                         <input type="submit" name="delete" value="Löschen">
                     </form>

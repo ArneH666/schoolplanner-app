@@ -232,7 +232,7 @@ def select_teacher() -> str | flask.Response:
     if flask.request.method == "POST":
         resp = get_request(f"/users/{flask.request.form['username']}")
         if resp.status_code == 200:
-            return flask.redirect(flask.url_for("teacher"), user_name=flask.request.form["username"])
+            return flask.redirect(flask.url_for("teacher", user_name=flask.request.form["username"]))
         else:
             return "There has been an error."
 
@@ -242,24 +242,30 @@ def teacher(user_name: str) -> str | flask.Response:
     if "data" not in flask.session:
         return flask.redirect(flask.url_for("login"))
     if flask.request.method == "GET":
-        if user_name is None:
-            return flask.render_template("teachers/teacher/teacher.html.j2", new=True)
         user_data = get_request(f"/users/{user_name}")
+        classes_data = get_request("/school_classes").json()
+        for i in range(len(classes_data)):
+            classes_data[i]["class_name"] = str(classes_data[i]["grade_id"]) + classes_data[i]["name"]
         if user_data.status_code != 200:
             return "There has been an error."
-        return flask.render_template("teachers/teacher/teacher.html.j2", user_data=user_data.json())
+        return flask.render_template("teachers/teacher/teacher.html.j2", user_data=user_data.json(),
+                                     is_teacher=(user_data.json()["teacher"] is not None), classes=classes_data)
     elif flask.request.method == "POST":
-        if "new" in flask.request.form:
+        if "new" in flask.request.form["method"]:
             data = {
+                "id": flask.request.form["id"],
                 "abbreviation": flask.request.form["abbreviation"]
             }
-            post_request(f"/users/{user_name}/teacher", data)
+            r = post_request(f"/users/{user_name}/teacher", data)
+            print(r.status_code, r.text)
             return flask.redirect(flask.url_for("teachers"))
-        else:
+        if "modify" in flask.request.form["method"]:
             data = {
+                "id": flask.request.form["id"],
                 "abbreviation": flask.request.form["abbreviation"]
             }
-            put_request(f"/users/{user_name}", data)
+            r = put_request(f"/users/{user_name}/teacher", data)
+            print(r.status_code, r.text)
             return flask.redirect(flask.url_for("teachers"))
 
 
@@ -268,31 +274,52 @@ def classes() -> str | flask.Response:
     if "data" not in flask.session:
         return flask.redirect(flask.url_for("login"), code=401)
     if flask.request.method == "GET":
-        school_classes = get_request("/school_classes")
-        classes_data: list[dict[str, str | int]] = school_classes.json()
+        classes_data = get_request("/school_classes").json()
         for i in range(len(classes_data)):
-            classes_data[i]["grade_id"] = str(classes_data[i]["grade_id"])
+            classes_data[i]["class_name"] = str(classes_data[i]["grade_id"]) + classes_data[i]["name"]
         return flask.render_template("classes/classes.html.j2", classes=classes_data)
     elif flask.request.method == "POST":
         if "new" in flask.request.form:
-            # TODO: Implement this
-            pass
+            return flask.redirect(flask.url_for("school_class"))
         if "modify" in flask.request.form:
-            # TODO: Implement this
-            pass
+            return flask.redirect(flask.url_for("school_class", class_id=flask.request.form["id"]))
         if "delete" in flask.request.form:
-            # TODO: Implement this
-            pass
+            delete_request(f"/school_classes/{flask.request.form['id']}")
+            classes_data = get_request("/school_classes").json()
+            for i in range(len(classes_data)):
+                classes_data[i]["class_name"] = str(classes_data[i]["grade_id"]) + classes_data[i]["name"]
+            return flask.render_template("classes/classes.html.j2", classes=classes_data)
 
 
-@app.route("/class", methods=["GET", "POST"])
-def class_() -> str | flask.Response:
+@app.route("/classes/class/", methods=["GET", "POST"])
+@app.route("/classes/class/<class_id>", methods=["GET", "POST"])
+def school_class(class_id: int | None = None) -> str | flask.Response:
     if "data" not in flask.session:
-        return flask.redirect(flask.url_for("login"), code=401)
+        return flask.redirect(flask.url_for("/login"), code=401)
     if flask.request.method == "GET":
-        return flask.render_template("classes/class/class.html.j2")
+        if class_id is None:
+            return flask.render_template("classes/class/class.html.j2", not_new=False)
+        class_data = get_request(f"/school_classes/{class_id}")
+        return flask.render_template("classes/class/class.html.j2", not_new=True, class_data=class_data.json())
     elif flask.request.method == "POST":
-        pass
+        if flask.request.form["method"] == "new":
+            data = {
+                "name": flask.request.form["name"],
+                "grade_id": flask.request.form["grade_id"],
+                "head_teacher_id": flask.request.form["head_teacher_id"]
+            }
+            r = post_request("/school_classes", data)
+            print(r.status_code, r.text)
+            return flask.redirect(flask.url_for("classes"))
+        if flask.request.form["method"] == "modify":
+            data = {
+                "id": class_id,
+                "name": flask.request.form["name"],
+                "grade_id": flask.request.form["grade_id"],
+                "head_teacher_id": flask.request.form["head_teacher_id"]
+            }
+            put_request(f"/school_classes/{class_id}", data)
+            return flask.redirect(flask.url_for("classes"))
 
 
 if __name__ == "__main__":

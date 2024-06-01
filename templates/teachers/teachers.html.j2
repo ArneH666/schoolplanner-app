@@ -23,8 +23,8 @@
                 <td>{{ teacher["account"]["username"] }}</td>
                 <td>
                     <form method="post">
-                        <input type="hidden" name="id" value="{{ teacher["username"] }}">
-                        <input type="submit" name="edit" value="Bearbeiten">
+                        <input type="hidden" name="username" value="{{ teacher["account"]["username"] }}">
+                        <input type="submit" name="modify" value="Bearbeiten">
                         <input type="submit" name="delete" value="Löschen">
                     </form>
                 </td>
