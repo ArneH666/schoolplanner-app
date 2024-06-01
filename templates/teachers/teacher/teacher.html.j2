@@ -5,7 +5,7 @@
     <p>Nachname: {{ user_data["last_name"] }}</p>
     <p>Benutzername: {{ user_data["username"] }}</p>
     <form method="post">
-        <input type="text" name="abbreviation" value="{% if user_data["teacher"] %}{{ user_data["teacher"]["abbreviation"] }}{% endif %}"><br>
+        <p>Abkürzung: <input type="text" name="abbreviation" value="{% if user_data["teacher"] %}{{ user_data["teacher"]["abbreviation"] }}{% endif %}"></p><br>
         <input type="hidden" name="id" value="{{ user_data["id"] }}">
         <input type="hidden" name="method" value="{% if is_teacher %}modify{% else %}new{% endif %}">
         <input type="submit" name="save" value="Speichern">

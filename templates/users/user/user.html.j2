@@ -8,7 +8,11 @@
         Vorname: <input type="text" name="first_name" value="{% if user_data %}{{ user_data.name }}{% endif %}" required><br>
         Nachname: <input type="text" name="last_name" value="{% if user_data %}{{ user_data.last_name }}{% endif %}" required><br>
         Geburtsdatum<input type="date" name="birthday" value="{% if user_data %}{{ user_data.birthday }}{% endif %}" required><br>
-        {% if new %}<input type="hidden" name="new" value="true">{% endif %}
+        {% if new %}
+            <input type="hidden" name="new">
+        {% else %}
+            <input type="hidden" name="modify">
+        {% endif %}
         <input type="submit" value="{% if new %}Erstellen{% else %}Aktualisieren{% endif %}">
     </form>
 {% endblock %}
