@@ -1,5 +1,35 @@
 {% extends "header.html.j2" %}
 {% block page_name %}Lehrer{% endblock %}
 {% block content %}
-    teachers
+    <form method="post">
+        <input type="submit" name="new" value="Neu">
+    </form>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Vorname</th>
+            <th>Nachname</th>
+            <th>Benutzername</th>
+            <th>Aktionen</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for teacher in teachers %}
+            <tr>
+                <td>{{ teacher["id"] }}</td>
+                <td>{{ teacher["account"]["name"] }}</td>
+                <td>{{ teacher["account"]["last_name"] }}</td>
+                <td>{{ teacher["account"]["username"] }}</td>
+                <td>
+                    <form method="post">
+                        <input type="hidden" name="id" value="{{ teacher["username"] }}">
+                        <input type="submit" name="edit" value="Bearbeiten">
+                        <input type="submit" name="delete" value="Löschen">
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}
