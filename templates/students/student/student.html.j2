@@ -1,0 +1,24 @@
+{% extends "header.html.j2" %}
+{% block page_name %}Schüler{% endblock %}
+{% block content %}
+    <form method="post">
+        <p>Vorname: {% if user_data %}{{ user_data["name"] }}{% endif %}</p>
+        <p>Nachname: {% if user_data %}{{ user_data["last_name"] }}{% endif %}</p>
+        <p>Geburtstag: {% if user_data %}{{ user_data["birthday"] }}{% endif %}</p>
+        <p>Benutzername: {{ user_data["username"] }}</p>
+        <label for="class">
+            <p>Klasse:
+                <select name="class" id="class">
+                    <option value="" disabled {% if not_student %}selected{% endif %}>Bitte wählen</option>
+                    {% for class in classes %}
+                        <option value="{{ class["class_name"] }}" {% if user_data and user_data["student"]["school_class_id"] == class["id"] %}selected{% endif %}>{{ class["class_name"] }}</option>
+                    {% endfor %}
+                </select>
+            </p>
+            <input type="hidden" name="id" value="{{ user_data["id"] }}">
+            <input type="hidden" name="method" value="{% if not_student %}new{% else %}modify{% endif %}">
+            <input type="submit" name="save" value="Speichern">
+        </label>
+        <a href="{{ url_for('students') }}">Abbrechen</a>
+    </form>
+{% endblock %}

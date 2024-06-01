@@ -1,1 +1,3 @@
-# schoolplanner-app
+# EduSync Planner
+
+## Team Overview

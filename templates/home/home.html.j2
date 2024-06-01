@@ -1,0 +1,10 @@
+{% extends "header.html.j2" %}
+{% block page_name %}Home{% endblock %}
+{% block content %}
+    <p>Hello, World!</p>
+    <a href={{ url_for("students") }}>Schüler</a><br>
+    <a href={{ url_for("teachers") }}>Lehrer</a><br>
+    <a href={{ url_for("classes") }}>Klassen</a><br>
+    <a href={{ url_for("users") }}>Benutzer</a><br>
+    <a href={{ url_for("logout") }}>Abmelden</a><br>
+{% endblock %}
