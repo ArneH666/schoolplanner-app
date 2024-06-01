@@ -16,7 +16,7 @@
                 </select>
             </p>
             <input type="hidden" name="id" value="{{ user_data["id"] }}">
-            <input type="hidden" name="method" value="{% if user_data %}modify{% else %}new{% endif %}">
+            <input type="hidden" name="method" value="{% if not_student %}new{% else %}modify{% endif %}">
             <input type="submit" name="save" value="Speichern">
         </label>
         <a href="{{ url_for('students') }}">Abbrechen</a>

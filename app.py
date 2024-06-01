@@ -175,45 +175,34 @@ def student(user_name: str) -> str | flask.Response:
         classes_data = get_request("/school_classes").json()
         for i in range(len(classes_data)):
             classes_data[i]["class_name"] = str(classes_data[i]["grade_id"]) + classes_data[i]["name"]
-        if user_name is None:
-            return flask.render_template("students/student/student.html.j2", classes=classes_data)
         student_data = get_request(f"/users/{user_name}")
         if student_data.status_code != 200:
             return "There has been an error."
         return flask.render_template("students/student/student.html.j2", user_data=student_data.json(),
                                      classes=classes_data, not_student=(student_data.json()["student"] is None))
     elif flask.request.method == "POST":
-        if "query" in flask.request.form:
-            request = get_request(f"/users/{flask.request.form['username']}")
-            if request.status_code == 200:
-                return flask.redirect(flask.url_for("student", user_name=flask.request.form["username"]))
-            else:
-                return "There has been an error."
         resp = get_request("/school_classes").json()
         class_id = None
+        for cl in resp:
+            if (str(cl["grade_id"]) + cl["name"]) == flask.request.form["class"]:
+                class_id = cl["id"]
+                break
         if "new" == flask.request.form["method"]:
-            for cl in resp:
-                if (str(cl["grade_id"]) + cl["name"]) == flask.request.form["class"]:
-                    class_id = cl["id"]
-                    break
-            print(flask.request.form["id"])
             data = {
                 "id": flask.request.form["id"],
                 "school_class_id": class_id
             }
-            post_request(f"/users/{user_name}/student", data)
+            r = post_request(f"/users/{user_name}/student", data)
             return flask.redirect(flask.url_for("students"))
         if "modify" == flask.request.form["method"]:
-            for cl in resp:
-                if str(cl["grade_id"]) + cl["name"] == flask.request.form["class"]:
-                    class_id = cl["id"]
-                    break
             data = {
                 "id": flask.request.form["id"],
                 "school_class_id": class_id
             }
             r = put_request(f"/users/{user_name}/student", data)
-            print(r.status_code, r.text)
+            return flask.redirect(flask.url_for("students"))
+        if "delete" == flask.request.form["method"]:
+            r = delete_request(f"/users/{user_name}/student")
             return flask.redirect(flask.url_for("students"))
 
 
