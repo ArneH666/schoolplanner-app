@@ -104,7 +104,7 @@ def user(user_name: str | None = None) -> str | flask.Response:
             }
             post_request("/users", data)
             return flask.redirect(flask.url_for("users"))
-        else:
+        if "modify" in flask.request.form:
             data = {
                 "username": flask.request.form["username"],
                 "email": flask.request.form["email"],
@@ -113,6 +113,9 @@ def user(user_name: str | None = None) -> str | flask.Response:
                 "birthday": flask.request.form["birthday"]
             }
             put_request(f"/users/{user_name}", data)
+            return flask.redirect(flask.url_for("users"))
+        if "delete" in flask.request.form:
+            delete_request(f"/users/{user_name}")
             return flask.redirect(flask.url_for("users"))
 
 
