@@ -1,39 +1,52 @@
 {% extends "bases/header.html.j2" %}
 {% block page_name %}Schüler{% endblock %}
 {% block content %}
-    <form method="post">
-        <input type="submit" name="new" value="Neuer Schüler">
-    </form>
-    <table>
-        <thead>
-            <tr>
-                <th>Schüler ID</th>
-                <th>Klassen ID</th>
-                <th>Konto ID</th>
-                <th>Vorname</th>
-                <th>Nachname</th>
-                <th>Geburtstag</th>
-                <th>Aktionen</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for student_data in students %}
+    <header>
+        <nav id="navbar">
+            <a href="/home">Home</a>
+            <a href="/students">Schüler</a>
+            <a href="/teachers">Lehrer</a>
+            <a href="/classes">Klassen</a>
+            <a href="/logout">Abmelden</a>
+        </nav>
+    </header>
+    <div id="login">
+        <form id="new_student" method="post">
+            <button id="student_button" type="submit" name="new">Neuer Schüler</button>
+        </form>
+        <table class="student_table">
+            <thead>
                 <tr>
-                    <td>{{ student_data["id"] }}</td>
-                    <td>{{ student_data["school_class_id"] }}</td>
-                    <td>{{ student_data["account"]["id"] }}</td>
-                    <td>{{ student_data["account"]["name"] }}</td>
-                    <td>{{ student_data["account"]["last_name"] }}</td>
-                    <td>{{ student_data["account"]["birthday"] }}</td>
-                    <td>
-                        <form method="post">
-                        <input type="hidden" name="id" value="{{ student_data["account"]["id"] }}">
-                            <input type="submit" name="modify" value="Ändern">
-                            <input type="submit" name="delete" value="Löschen">
-                        </form>
-                    </td>
+                    <th>Schüler ID</th>
+                    <th>Klassen ID</th>
+                    <th>Konto ID</th>
+                    <th>Vorname</th>
+                    <th>Nachname</th>
+                    <th>Geburtstag</th>
+                    <th>Aktionen</th>
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+            </thead >
+            <tbody class="student_table">
+                {% for student_data in students %}
+                    <tr class="student_table">
+                        <td>{{ student_data["id"] }}</td>
+                        <td>{{ student_data["school_class_id"] }}</td>
+                        <td>{{ student_data["account"]["id"] }}</td>
+                        <td>{{ student_data["account"]["name"] }}</td>
+                        <td>{{ student_data["account"]["last_name"] }}</td>
+                        <td>{{ student_data["account"]["birthday"] }}</td>
+                        <td>
+                            <form method="post">
+                            <input type="hidden" name="id" value="{{ student_data["account"]["id"] }}">
+                                <input id="student_button" type="submit" name="modify" value="Ändern">
+                                <input id="student_button" type="submit" name="delete" value="Löschen">
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <button id="student_button">Mehr anzeigen</button>
+    </div>
+    
 {% endblock %}
