@@ -34,7 +34,6 @@ def delete_request(url_part: str) -> requests.Response:
 def home() -> str | flask.Response:
     if "data" in flask.session:
         return flask.render_template("home/home.html.j2")
-
     return flask.redirect(flask.url_for("login"), code=401)
 
 
