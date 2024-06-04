@@ -1,0 +1,33 @@
+{% extends "header.html.j2" %}
+{% block page_name %}Klassen{% endblock %}
+{% block content %}
+    <form method="post">
+        <input type="submit" name="new" value="+">
+    </form>
+    <table>
+        <tr>
+            <th>Klassen ID</th>
+            <th>Klassen Name</th>
+            <th>Klassenlehrer ID</th>
+            <th>Klassenlehrer Name</th>
+            <th>Klassenlehrer Kürzel</th>
+            <th>Aktionen</th>
+        </tr>
+        {% for class in classes %}
+            <tr>
+                <td>{{ class["id"] }}</td>
+                <td>{{ class["class_name"] }}</td>
+                <td>{{ class["head_teacher_id"] }}</td>
+                <td>{{ class["head_teacher_name"] }}</td>
+                <td>{{ class["head_teacher_abbreviation"] }}</td>
+                <td>
+                    <form method="post">
+                        <input type="hidden" name="id" value="{{ class["id"] }}">
+                        <input type="submit" name="modify" value="Ändern">
+                        <input type="submit" name="delete" value="Löschen">
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

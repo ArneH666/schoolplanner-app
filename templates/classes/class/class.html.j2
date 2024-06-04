@@ -1,0 +1,11 @@
+{% extends "header.html.j2" %}
+{% block page_name %}Klasse{% endblock %}
+{% block content %}
+    <form method="post">
+        <p>Schuljahr: <input type="number" name="grade_id" value="{% if not_new %}{{ class_data["grade_id"] }}{% endif %}"></p>
+        <p>Klassenname: <input type="text" name="name" value="{% if not_new %}{{ class_data["name"] }}{% endif %}"></p>
+        <p>Klassenlehrer ID: <input type="number" name="head_teacher_id" value="{% if not_new %}{{ class_data["head_teacher_id"] }}{% endif %}"></p>
+        <input type="submit" value="Speichern">
+        <input type="hidden" name="method" value="{% if not_new %}modify{% else %}new{% endif %}">
+    </form>
+{% endblock %}
